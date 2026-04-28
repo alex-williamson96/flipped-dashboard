@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import apiClient from '../../lib/apiClient'
+import ThemeToggle from '../../components/ThemeToggle'
 import { useIdentity } from './IdentityContext'
 
 export default function WhoAreYou() {
@@ -24,7 +25,10 @@ export default function WhoAreYou() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
+    <div className="min-h-screen flex items-center justify-center bg-base-200 relative">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="card bg-base-100 shadow-xl w-full max-w-sm p-8 flex flex-col gap-6">
         <h1 className="text-2xl font-bold text-center">Who are you?</h1>
         {!showStudents ? (

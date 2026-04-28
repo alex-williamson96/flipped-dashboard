@@ -3,6 +3,7 @@ import RoleSwitcher from '../features/roleSwitcher/RoleSwitcher'
 import { useIdentity } from '../features/roleSwitcher/IdentityContext'
 import ColdStartBanner from './ColdStartBanner'
 import LogoutButton from './LogoutButton'
+import ThemeToggle from './ThemeToggle'
 
 export default function Layout() {
   const { role } = useIdentity()
@@ -32,6 +33,7 @@ export default function Layout() {
         </div>
         <div className="flex items-center gap-2">
           <RoleSwitcher />
+          <ThemeToggle />
           <LogoutButton />
         </div>
       </nav>
