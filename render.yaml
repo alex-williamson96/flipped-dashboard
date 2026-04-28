@@ -1,11 +1,11 @@
 services:
   - type: web
     name: flipped-dashboard-api
-    runtime: java
+    runtime: docker
     rootDir: backend
     plan: free
-    buildCommand: ./mvnw -B package -DskipTests
-    startCommand: java -Dserver.port=$PORT -jar target/flipped-dashboard-0.0.1-SNAPSHOT.jar
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /api/v1/health
     envVars:
       - key: DB_URL
