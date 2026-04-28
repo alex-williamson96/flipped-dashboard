@@ -1,0 +1,1 @@
+-- Placeholder migration. Schema DDL is delivered by the data-model feature.
