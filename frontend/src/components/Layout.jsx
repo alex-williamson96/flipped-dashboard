@@ -14,20 +14,20 @@ export default function Layout() {
         <div className="flex items-center gap-4">
           <span className="font-semibold">Flipped Dashboard</span>
           {role === 'teacher' && (
-            <>
-              <NavLink
-                to="/teacher/courses"
-                className={({ isActive }) => `text-sm ${isActive ? 'font-medium' : 'text-base-content/60 hover:text-base-content'}`}
-              >
-                Courses
-              </NavLink>
+            <div className="join">
               <NavLink
                 to="/teacher/dashboard"
-                className={({ isActive }) => `text-sm ${isActive ? 'font-medium' : 'text-base-content/60 hover:text-base-content'}`}
+                className={({ isActive }) => `btn btn-sm join-item ${isActive ? 'btn-primary' : 'btn-outline'}`}
               >
                 Dashboard
               </NavLink>
-            </>
+              <NavLink
+                to="/teacher/courses"
+                className={({ isActive }) => `btn btn-sm join-item ${isActive ? 'btn-primary' : 'btn-outline'}`}
+              >
+                Courses
+              </NavLink>
+            </div>
           )}
         </div>
         <div className="flex items-center gap-2">

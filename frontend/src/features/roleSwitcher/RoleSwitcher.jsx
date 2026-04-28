@@ -17,7 +17,7 @@ export default function RoleSwitcher() {
 
   useEffect(() => {
     if (role === 'teacher' && !window.location.pathname.startsWith('/teacher')) {
-      navigate('/teacher/courses')
+      navigate('/teacher/dashboard')
     } else if (role === 'student' && !window.location.pathname.startsWith('/student')) {
       navigate('/student')
     }
