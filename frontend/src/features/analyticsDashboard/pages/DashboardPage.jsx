@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import useCourses from '../../../hooks/useCourses'
 import useLessons from '../../../hooks/useLessons'
-import useDashboardSummary from '../hooks/useDashboardSummary'
-import useLessonTimeline from '../hooks/useLessonTimeline'
+import useSections from '../../../hooks/useSections'
+import useDashboardSummary, { DEFAULT_FILTERS, dashboardSummaryQuery } from '../hooks/useDashboardSummary'
+import useLessonTimeline, { lessonTimelineQuery } from '../hooks/useLessonTimeline'
 import FilterBar from '../components/FilterBar'
 import AlertBanner from '../components/AlertBanner'
 import StatsBar from '../components/StatsBar'
@@ -13,20 +15,14 @@ import IndividualStudentView from '../components/IndividualStudentView'
 import WeakestObjectivesPanel from '../components/WeakestObjectivesPanel'
 
 export default function DashboardPage() {
-  const [filters, setFilters] = useState({
-    courseId: null,
-    sectionId: null,
-    lessonId: null,
-    completionStatus: 'all',
-    minQuizScore: null,
-    maxQuizScore: null,
-    confidenceLevel: null,
-  })
+  const [filters, setFilters] = useState({ ...DEFAULT_FILTERS })
   const [selectedStudentId, setSelectedStudentId] = useState(null)
   const autoSelectCourseRef = useRef(null)
+  const queryClient = useQueryClient()
 
   const { data: courses } = useCourses()
   const { data: lessons } = useLessons(filters.courseId)
+  const { data: sections } = useSections(filters.courseId)
   const { data: overviewData, isLoading: overviewLoading } = useDashboardSummary(filters)
   const { data: timelineData, isLoading: timelineLoading } = useLessonTimeline({
     courseId: filters.courseId,
@@ -46,6 +42,23 @@ export default function DashboardPage() {
       setFilters(f => ({ ...f, lessonId: active.id }))
     }
   }, [filters.courseId, lessons])
+
+  useEffect(() => {
+    if (!filters.courseId || !sections || !lessons) return
+    const sectionIds = [null, ...sections.map(s => s.id)]
+    const lessonIds = [null, ...lessons.map(l => l.id)]
+    for (const sectionId of sectionIds) {
+      queryClient.prefetchQuery(lessonTimelineQuery({ courseId: filters.courseId, sectionId }))
+      for (const lessonId of lessonIds) {
+        queryClient.prefetchQuery(dashboardSummaryQuery({
+          ...DEFAULT_FILTERS,
+          courseId: filters.courseId,
+          sectionId,
+          lessonId,
+        }))
+      }
+    }
+  }, [filters.courseId, sections, lessons, queryClient])
 
   function handleFilterChange(partial) {
     setFilters(f => ({ ...f, ...partial }))

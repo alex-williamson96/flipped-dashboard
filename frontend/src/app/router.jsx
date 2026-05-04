@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import Layout from '../components/Layout'
 import CourseListPage from '../features/courseManagement/pages/CourseListPage'
 import CourseDetailPage from '../features/courseManagement/pages/CourseDetailPage'
@@ -14,6 +14,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout />,
     children: [
+      { index: true, element: <Navigate to="/teacher/dashboard" replace /> },
       { path: 'teacher/courses', element: <CourseListPage /> },
       { path: 'teacher/courses/:courseId', element: <CourseDetailPage /> },
       { path: 'teacher/courses/:courseId/lessons/:lessonId', element: <LessonEditorPage /> },

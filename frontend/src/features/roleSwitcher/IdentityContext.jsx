@@ -5,7 +5,7 @@ const IdentityContext = createContext(null)
 
 function readStorage() {
   const role = localStorage.getItem('identity.role')
-  if (role !== 'teacher' && role !== 'student') return { role: null, studentId: null, studentName: null }
+  if (role !== 'teacher' && role !== 'student') return { role: 'teacher', studentId: null, studentName: null }
   const studentId = role === 'student' ? Number(localStorage.getItem('identity.studentId')) || null : null
   const studentName = role === 'student' ? localStorage.getItem('identity.studentName') : null
   return { role, studentId, studentName }
